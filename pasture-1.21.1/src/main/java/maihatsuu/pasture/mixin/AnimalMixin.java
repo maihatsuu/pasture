@@ -6,7 +6,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import maihatsuu.pasture.PastureConfig;
 import maihatsuu.pasture.milk.Grazing;
 import maihatsuu.pasture.milk.GrazingAnimal;
 import maihatsuu.pasture.milk.MilkRules;
@@ -47,10 +46,8 @@ abstract class AnimalMixin implements GrazingAnimal {
 		if (!(self instanceof Chicken)) {
 			return;
 		}
-		PastureConfig config = PastureConfig.get();
-		int eggs = self.getRandom().nextDouble() < config.dozenEggsChance
-			? 12
-			: config.eggsPerBreedMin + self.getRandom().nextInt(config.eggsPerBreedMax - config.eggsPerBreedMin + 1);
+		// 2-4 eggs, or now and then (5%) a dozen.
+		int eggs = self.getRandom().nextFloat() < 0.05F ? 12 : 2 + self.getRandom().nextInt(3);
 		double x = (self.getX() + partner.getX()) / 2.0;
 		double y = (self.getY() + partner.getY()) / 2.0 + 0.25;
 		double z = (self.getZ() + partner.getZ()) / 2.0;

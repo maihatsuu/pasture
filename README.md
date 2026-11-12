@@ -53,21 +53,14 @@ Optional:
 
 ## Configuration
 Settings are in `config/pasture.json`, or in the config screen if Mod Menu and Cloth Config are
-installed. All of them apply right away except the stack size, which needs a restart and must match
-between client and server.
+installed. Each one switches a feature on or off and applies right away.
 
 | Option | Default | Description |
 |---|---|---|
 | `milkNeedsGrazing` | `true` | Cows, goats and mooshrooms go dry after milking and refill by grazing. |
 | `milkBottles` | `true` | Glass bottles milk animals; buckets don't. |
-| `milkBottleStackSize` | `16` | Stack size of milk bottles (restart). |
 | `passiveEggLaying` | `false` | Keep vanilla's egg laying. |
-| `eggsPerBreedMin` / `eggsPerBreedMax` | `2` / `4` | Eggs dropped when two chickens breed. |
-| `dozenEggsChance` | `0.05` | Chance that a breeding drops 12 eggs instead. |
 | `animalsEatDroppedFood` | `true` | Animals eat breeding food dropped near them. |
-| `dropFoodRange` | `8` | How far (in blocks, in line of sight) animals notice dropped food. |
-| `scuteCooldownTicks` | `24000` | Time before a brushed armadillo can be brushed again (24000 = one day). |
-| `scutesPerBrushMin` / `scutesPerBrushMax` | `2` / `6` | Scutes from one brushing. |
 
 ## For mod developers
 Other mods can milk through Pasture's rules:

@@ -11,11 +11,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 
 public final class PastureItems {
-	/** Stack size is read from the config once, here, so changing it needs a restart. */
 	public static final Item MILK_BOTTLE = Registry.register(
 		BuiltInRegistries.ITEM,
 		Pasture.id("milk_bottle"),
-		new MilkBottleItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).stacksTo(PastureConfig.get().milkBottleStackSize))
+		new MilkBottleItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).stacksTo(16))
 	);
 
 	private PastureItems() {

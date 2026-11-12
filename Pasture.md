@@ -37,7 +37,7 @@ side holds all the rules, the client only adds visuals.
 
 ## Eggs: breeding drops eggs
 - Chickens **no longer lay eggs passively**.
-- Feeding two chickens seeds works as usual, but instead of a chick they **drop 2–4 eggs** (config),
+- Feeding two chickens seeds works as usual, but instead of a chick they **drop 2–4 eggs**,
   with a 5% chance of a dozen (12), and both go on the normal 5-minute breeding cooldown.
 - Chicks come from **throwing eggs** (vanilla odds: 1 in 8 for a chick, 1 in 32 of those for four).
 - Result: egg supply is paced by seeds and the breeding cooldown, and chicken populations grow
@@ -45,7 +45,7 @@ side holds all the rules, the client only adds visuals.
 
 ## Dropped food
 - Animals eat their breeding food when it's lying on the ground: an adult that's off its breeding
-  cooldown and not already in love notices the food within **8 blocks** (config) in **line of
+  cooldown and not already in love notices the food within **8 blocks** in **line of
   sight**, walks over and eats **one item** from the stack, which puts it in love mode. Love mode
   stops it eating more, so a stack feeds one animal per item.
 - Works for every animal, including Brain-driven ones (goats, frogs, armadillos, camels...).
@@ -57,8 +57,7 @@ side holds all the rules, the client only adds visuals.
 - Automatic farms can breed animals by dropping food (droppers, hoppers) in sight of a pen.
 
 ## Armadillo scutes
-- Brushing an armadillo gives **2–6 scutes** (config) and makes it **"brushed"** for one in-game day
-  (config). Brushing a brushed armadillo does nothing (brush still plays its sound, no durability used).
+- Brushing an armadillo gives **2–6 scutes** and makes it **"brushed"** for one in-game day. Brushing a brushed armadillo does nothing (brush still plays its sound, no durability used).
 - Natural shedding is unchanged.
 - Jade line "Scute: ready / regrowing".
 
@@ -75,18 +74,14 @@ side holds all the rules, the client only adds visuals.
   the same milk).
 
 ## Config (`config/pasture.json`)
+Feature toggles only; amounts (stack size, egg and scute counts, ranges, cooldowns) are fixed in code.
+
 | Option | Default | Description |
 |---|---|---|
 | `milkNeedsGrazing` | true | Cows, goats and mooshrooms go dry after milking. |
 | `milkBottles` | true | Glass bottles milk animals; buckets don't. |
-| `milkBottleStackSize` | 16 | Stack size of milk bottles. |
 | `passiveEggLaying` | false | Keep vanilla egg laying. |
-| `eggsPerBreedMin` / `eggsPerBreedMax` | 2 / 4 | Eggs dropped when two chickens breed. |
-| `dozenEggsChance` | 0.05 | Chance that a breeding drops a dozen (12) eggs instead. |
 | `animalsEatDroppedFood` | true | Animals eat breeding food dropped near them. |
-| `dropFoodRange` | 8 | How far (in line of sight) animals notice dropped food. |
-| `scuteCooldownTicks` | 24000 | Time before a brushed armadillo can be brushed again. |
-| `scutesPerBrushMin` / `scutesPerBrushMax` | 2 / 6 | Scutes from one brushing. |
 
 ## Decided
 - Feeding a dry cow (goat, mooshroom) wheat breeds it and leaves it dry; only grazing refills milk.

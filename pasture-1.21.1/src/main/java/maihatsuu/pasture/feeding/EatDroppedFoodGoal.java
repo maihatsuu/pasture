@@ -36,6 +36,8 @@ import net.minecraft.world.level.gameevent.GameEvent;
  * goal runs for them too, steering them through their WALK_TARGET memory instead.
  */
 public class EatDroppedFoodGoal extends Goal {
+	/** How far (in blocks, with line of sight) animals notice dropped food. */
+	private static final double RANGE = 8.0;
 	private static final double SPEED = 1.1;
 	private static final int SCAN_INTERVAL = 20;
 	private static final int REPATH_INTERVAL = 10;
@@ -187,7 +189,7 @@ public class EatDroppedFoodGoal extends Goal {
 	}
 
 	private double range() {
-		return PastureConfig.get().dropFoodRange;
+		return RANGE;
 	}
 
 	/** The nearest item of this animal's breeding food within range and in line of sight. */

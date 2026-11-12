@@ -1,13 +1,13 @@
 package maihatsuu.pasture.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import maihatsuu.pasture.PastureAttachments;
-import maihatsuu.pasture.PastureConfig;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.animal.armadillo.Armadillo;
 import net.minecraft.world.item.ItemStack;
@@ -19,6 +19,10 @@ import net.minecraft.world.item.ItemStack;
  */
 @Mixin(Armadillo.class)
 abstract class ArmadilloMixin {
+	/** One in-game day. */
+	@Unique
+	private static final long SCUTE_COOLDOWN_TICKS = 24000L;
+
 	@Inject(method = "brushOffScute", at = @At("HEAD"), cancellable = true)
 	private void pasture$stillBrushed(CallbackInfoReturnable<Boolean> cir) {
 		Armadillo self = (Armadillo) (Object) this;
@@ -41,9 +45,8 @@ abstract class ArmadilloMixin {
 		)
 	)
 	private ItemStack pasture$moreScutes(ItemStack stack) {
-		PastureConfig config = PastureConfig.get();
-		Armadillo self = (Armadillo) (Object) this;
-		stack.setCount(config.scutesPerBrushMin + self.getRandom().nextInt(config.scutesPerBrushMax - config.scutesPerBrushMin + 1));
+		// 2-6 scutes.
+		stack.setCount(2 + ((Armadillo) (Object) this).getRandom().nextInt(5));
 		return stack;
 	}
 
@@ -51,7 +54,7 @@ abstract class ArmadilloMixin {
 	private void pasture$markBrushed(CallbackInfoReturnable<Boolean> cir) {
 		Armadillo self = (Armadillo) (Object) this;
 		if (cir.getReturnValueZ() && !self.level().isClientSide) {
-			self.setAttached(PastureAttachments.BRUSHED_UNTIL, self.level().getGameTime() + PastureConfig.get().scuteCooldownTicks);
+			self.setAttached(PastureAttachments.BRUSHED_UNTIL, self.level().getGameTime() + SCUTE_COOLDOWN_TICKS);
 		}
 	}
 }
