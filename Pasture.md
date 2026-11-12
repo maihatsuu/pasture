@@ -16,8 +16,9 @@ side holds all the rules, the client only adds visuals.
   cow whether it's dry or full; only grazing refills it. Stone pens give no milk.
 - Feedback: milking a dry cow does nothing (no sound). Milking into a bottle plays the milking sound
   and the bottle-filling sound. Jade line "Milk: ready / dry".
-- Visual: cows have no eating animation. Add a head-lowering animation on the client (mixin on
-  `CowModel`), with grass-break particles and sound from the server so it reads even without it.
+- Visual: cows and goats have no eating animation, so the client lowers their heads while grazing
+  (a `QuadrupedModel` mixin: the sheep's curve for cows, a deeper tilt for goats). Grass-break
+  particles and sound come from the server, so it reads even without the client side.
 - **Goats**: same rules (they graze too).
 - **Mooshrooms**: milk and stew share one state. They refill by eating grass or **mycelium**
   (mycelium turns to dirt), which sheep can't.
@@ -30,14 +31,14 @@ side holds all the rules, the client only adds visuals.
 - Buckets no longer milk anything. Existing milk buckets still work (old worlds), but nothing makes
   new ones, and they are hidden from the creative inventory. A bucket on a cow does nothing (no arm
   swing).
-- Recipes: cake uses 3 milk bottles (old milk buckets are still accepted). Swap milk buckets for bottles anywhere else (other mods' recipes
-  via the `c:` milk tag: add the bottle to it).
-- Watch: Pantry or other mods that check for the milk bucket item directly.
+- Recipes: cake uses 3 milk bottles (old milk buckets are still accepted). The bottle is in the
+  `c:drinks/milk` tag, so other mods' recipes that use the tag accept it.
+- Mods that check for the milk bucket item directly won't see bottles. Pantry doesn't touch milk.
 
 ## Eggs: breeding drops eggs
 - Chickens **no longer lay eggs passively**.
-- Feeding two chickens seeds works as usual, but instead of a chick they **drop 2–4 eggs** (config), with a 5% chance of a dozen (12)
-  and both go on the normal 5-minute breeding cooldown.
+- Feeding two chickens seeds works as usual, but instead of a chick they **drop 2–4 eggs** (config),
+  with a 5% chance of a dozen (12), and both go on the normal 5-minute breeding cooldown.
 - Chicks come from **throwing eggs** (vanilla odds: 1 in 8 for a chick, 1 in 32 of those for four).
 - Result: egg supply is paced by seeds and the breeding cooldown, and chicken populations grow
   slower.
@@ -56,16 +57,22 @@ side holds all the rules, the client only adds visuals.
 - Automatic farms can breed animals by dropping food (droppers, hoppers) in sight of a pen.
 
 ## Armadillo scutes
-- Brushing an armadillo gives **2–6 scutes** (config) and makes it **"brushed"** for one in-game day (config).
-  Brushing a brushed armadillo does nothing (brush still plays its sound, no durability used).
+- Brushing an armadillo gives **2–6 scutes** (config) and makes it **"brushed"** for one in-game day
+  (config). Brushing a brushed armadillo does nothing (brush still plays its sound, no durability used).
 - Natural shedding is unchanged.
 - Jade line "Scute: ready / regrowing".
 
 ## Hamlet compatibility
-- Expose a small API (`Pasture.canMilk(entity)`, `Pasture.milk(entity)`) so Hamlet's Shepherd can
-  milk and collect eggs through the same rules. The Shepherd uses a glass bottle and gets a milk
-  bottle, exactly like a player.
-- Egg drops from breeding are normal item entities, so a Shepherd can pick them up.
+- API: `Pasture.canMilk(entity)` and `Pasture.milk(entity)` (server side). `milk` plays the milking
+  and bottle-filling sounds, makes the animal dry and returns a milk bottle; the caller uses up its
+  own glass bottle. So Hamlet's Shepherd milks through the same rules as a player.
+- Eggs: Hamlet's Shepherd already breeds animals with feed from its storage, chickens with seeds
+  included. With Pasture, that breeding drops eggs as normal item entities, which it picks up. It
+  needs no separate egg collection.
+- To do in Hamlet (`Hamlet.md` still describes vanilla rules): the Shepherd should milk with glass
+  bottles through `Pasture.milk` instead of buckets, stock milk bottles instead of milk buckets,
+  drop its "an egg from chickens every 5 minutes" and keep bowls for mooshroom stew (which uses up
+  the same milk).
 
 ## Config (`config/pasture.json`)
 | Option | Default | Description |
@@ -81,14 +88,14 @@ side holds all the rules, the client only adds visuals.
 | `scuteCooldownTicks` | 24000 | Time before a brushed armadillo can be brushed again. |
 | `scutesPerBrushMin` / `scutesPerBrushMax` | 2 / 6 | Scutes from one brushing. |
 
-## Open questions
-- Should sheep follow the same pattern (they already regrow wool from grass, so probably nothing)?
-- Does Hamlet's Shepherd also feed/breed chickens to get eggs, or only collect them?
-- Hamlet.md's Shepherd still milks with buckets and collects eggs every 5 minutes; it should switch
-  to `Pasture.milk` with glass bottles and pick up the eggs that breeding drops.
-
 ## Decided
 - Feeding a dry cow (goat, mooshroom) wheat breeds it and leaves it dry; only grazing refills milk.
+- Cows, goats and mooshrooms graze exactly like sheep (always, short grass or grass block, babies
+  more often). Mooshrooms can also eat mycelium.
+- Sheep are unchanged: they already regrow wool by grazing, which is the pattern the rest copy.
+- Dispenser feeding was replaced by animals eating dropped food. Untamed animals that can't breed
+  are skipped.
+- Hamlet's Shepherd gets eggs by breeding chickens (see Hamlet compatibility).
 
 ## Testing
 - Milk a cow with a bottle → milk bottle, cow is dry; milking again fails; cow eats grass (grass

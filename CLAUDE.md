@@ -4,7 +4,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Layout
 
-- `Pasture.md` — the design spec for the mod. It is the source of truth for intended behavior, config options, open questions and the manual test checklist. Read it before implementing a feature, and update it when a design decision changes or an open question is resolved.
+- `Pasture.md` — the design spec for the mod. It is the source of truth for intended behavior, config options, decisions made and the manual test checklist. Read it before implementing a feature, and update it when a design decision changes.
+- `README.md` — player-facing description (features, install, config table, API). Keep it in sync with `Pasture.md` when features or config change.
 - `pasture-1.21.1/` — the Gradle project (Fabric mod, Minecraft 1.21.1). All commands below run from here.
 - `.github/workflows/build.yml` — CI at the repo root; runs `./gradlew build` inside `pasture-1.21.1/`.
 
