@@ -23,8 +23,14 @@
 	"config.pasture.eggsPerBreedMin.tooltip": "Fewest eggs dropped when two chickens breed.",
 	"config.pasture.eggsPerBreedMax": "Eggs per breeding (max)",
 	"config.pasture.eggsPerBreedMax.tooltip": "Most eggs dropped when two chickens breed.",
+	"config.pasture.dozenEggsChance": "Dozen eggs chance",
+	"config.pasture.dozenEggsChance.tooltip": "Chance (0 to 1) that two chickens breeding drop 12 eggs instead. 0.05 is 5%.",
 	"config.pasture.dispenserFeeding": "Dispenser feeding",
 	"config.pasture.dispenserFeeding.tooltip": "Dispensers feed breeding food to the animal in front of them.",
 	"config.pasture.scuteCooldownTicks": "Scute cooldown (ticks)",
-	"config.pasture.scuteCooldownTicks.tooltip": "Time before a brushed armadillo can be brushed again. 24000 is one day."
+	"config.pasture.scuteCooldownTicks.tooltip": "Time before a brushed armadillo can be brushed again. 24000 is one day.",
+	"config.pasture.scutesPerBrushMin": "Scutes per brushing (min)",
+	"config.pasture.scutesPerBrushMin.tooltip": "Fewest scutes from brushing an armadillo.",
+	"config.pasture.scutesPerBrushMax": "Scutes per brushing (max)",
+	"config.pasture.scutesPerBrushMax.tooltip": "Most scutes from brushing an armadillo."
 }

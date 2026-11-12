@@ -36,7 +36,7 @@ side holds all the rules, the client only adds visuals.
 
 ## Eggs: breeding drops eggs
 - Chickens **no longer lay eggs passively**.
-- Feeding two chickens seeds works as usual, but instead of a chick they **drop 2–4 eggs** (config)
+- Feeding two chickens seeds works as usual, but instead of a chick they **drop 2–4 eggs** (config), with a 5% chance of a dozen (12)
   and both go on the normal 5-minute breeding cooldown.
 - Chicks come from **throwing eggs** (vanilla odds: 1 in 8 for a chick, 1 in 32 of those for four).
 - Result: egg supply is paced by seeds and the breeding cooldown, and chicken populations grow
@@ -44,13 +44,14 @@ side holds all the rules, the client only adds visuals.
 
 ## Dispenser feeding
 - A dispenser holding an animal's food feeds the first adult animal in front of it that wants it:
-  breeding food puts it in love mode (seeds make chickens breed and drop eggs).
+  breeding food puts it in love mode (seeds make chickens breed and drop eggs). Animals that must be
+  tamed to breed (wolves, cats, horses, donkeys, llamas) are skipped while untamed.
 - One item per pulse. If nothing in front wants the food, it falls back to dropping the item as
   vanilla does.
 - This keeps automatic farms possible, but they have to be supplied with food.
 
 ## Armadillo scutes
-- Brushing an armadillo gives a scute and makes it **"brushed"** for one in-game day (config).
+- Brushing an armadillo gives **2–6 scutes** (config) and makes it **"brushed"** for one in-game day (config).
   Brushing a brushed armadillo does nothing (brush still plays its sound, no durability used).
 - Natural shedding is unchanged.
 - Jade line "Scute: ready / regrowing".
@@ -69,8 +70,10 @@ side holds all the rules, the client only adds visuals.
 | `milkBottleStackSize` | 16 | Stack size of milk bottles. |
 | `passiveEggLaying` | false | Keep vanilla egg laying. |
 | `eggsPerBreedMin` / `eggsPerBreedMax` | 2 / 4 | Eggs dropped when two chickens breed. |
+| `dozenEggsChance` | 0.05 | Chance that a breeding drops a dozen (12) eggs instead. |
 | `dispenserFeeding` | true | Dispensers feed animals. |
 | `scuteCooldownTicks` | 24000 | Time before a brushed armadillo can be brushed again. |
+| `scutesPerBrushMin` / `scutesPerBrushMax` | 2 / 6 | Scutes from one brushing. |
 
 ## Open questions
 - Should sheep follow the same pattern (they already regrow wool from grass, so probably nothing)?

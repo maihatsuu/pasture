@@ -37,7 +37,10 @@ abstract class AnimalMixin implements GrazingAnimal {
 		}
 	}
 
-	/** Two chickens breeding drop eggs instead of a chick, then go on the normal cooldown. */
+	/**
+	 * Two chickens breeding drop eggs instead of a chick (sometimes a dozen), then go on the normal
+	 * cooldown.
+	 */
 	@Inject(method = "spawnChildFromBreeding", at = @At("HEAD"), cancellable = true)
 	private void pasture$breedEggs(ServerLevel level, Animal partner, CallbackInfo ci) {
 		Animal self = (Animal) (Object) this;
@@ -45,7 +48,9 @@ abstract class AnimalMixin implements GrazingAnimal {
 			return;
 		}
 		PastureConfig config = PastureConfig.get();
-		int eggs = config.eggsPerBreedMin + self.getRandom().nextInt(config.eggsPerBreedMax - config.eggsPerBreedMin + 1);
+		int eggs = self.getRandom().nextDouble() < config.dozenEggsChance
+			? 12
+			: config.eggsPerBreedMin + self.getRandom().nextInt(config.eggsPerBreedMax - config.eggsPerBreedMin + 1);
 		double x = (self.getX() + partner.getX()) / 2.0;
 		double y = (self.getY() + partner.getY()) / 2.0 + 0.25;
 		double z = (self.getZ() + partner.getZ()) / 2.0;
