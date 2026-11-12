@@ -59,7 +59,7 @@ public final class MilkRules {
 		if (!canMilk(entity) || entity.level().isClientSide) {
 			return ItemStack.EMPTY;
 		}
-		entity.level().playSound(null, entity, milkingSound(entity), SoundSource.NEUTRAL, 1.0F, 1.0F);
+		playMilkingSounds(entity, true);
 		setDry(entity, true);
 		return new ItemStack(PastureItems.MILK_BOTTLE);
 	}
@@ -78,23 +78,24 @@ public final class MilkRules {
 			return null;
 		}
 
-		// The client doesn't know the milk state or the server's config: it just swings and lets
-		// the server decide (the server updates the held item).
-		if (animal.level().isClientSide) {
-			return InteractionResult.SUCCESS;
-		}
-
+		// On the client this uses the client's config, which normally matches the server's.
 		PastureConfig config = PastureConfig.get();
 		if (bottle && !config.milkBottles) {
 			return null;
 		}
 		if (bucket && config.milkBottles) {
-			// Buckets no longer milk anything.
+			// Buckets no longer milk anything: no arm swing either.
 			return InteractionResult.PASS;
 		}
 
+		// The client doesn't know the milk state: it just swings and lets the server decide (the
+		// server updates the held item).
+		if (animal.level().isClientSide) {
+			return InteractionResult.SUCCESS;
+		}
+
 		if (isDry(animal)) {
-			playDryFeedback(animal);
+			// Nothing to give: no sound, the held item stays as it is.
 			return InteractionResult.CONSUME;
 		}
 
@@ -105,21 +106,21 @@ public final class MilkRules {
 		}
 
 		ItemStack result = bottle ? new ItemStack(PastureItems.MILK_BOTTLE) : new ItemStack(Items.MILK_BUCKET);
-		player.playSound(milkingSound(animal), 1.0F, 1.0F);
+		playMilkingSounds(animal, bottle);
 		player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, result));
 		setDry(animal, true);
 		return InteractionResult.SUCCESS;
 	}
 
-	/** A low-pitched call: "I've got nothing for you." */
-	public static void playDryFeedback(Animal animal) {
-		SoundEvent sound;
-		if (animal instanceof Goat goat) {
-			sound = goat.isScreamingGoat() ? SoundEvents.GOAT_SCREAMING_AMBIENT : SoundEvents.GOAT_AMBIENT;
-		} else {
-			sound = SoundEvents.COW_AMBIENT;
+	/**
+	 * The animal's milking sound, plus the bottle-filling sound when milked into a bottle. Played
+	 * from the server to everyone, the milker included (the client skips milking, so it plays nothing).
+	 */
+	private static void playMilkingSounds(Entity entity, boolean bottle) {
+		entity.level().playSound(null, entity, milkingSound(entity), SoundSource.PLAYERS, 1.0F, 1.0F);
+		if (bottle) {
+			entity.level().playSound(null, entity, SoundEvents.BOTTLE_FILL, SoundSource.PLAYERS, 1.0F, 1.0F);
 		}
-		animal.level().playSound(null, animal, sound, SoundSource.NEUTRAL, 1.0F, 0.6F);
 	}
 
 	private static SoundEvent milkingSound(Entity entity) {

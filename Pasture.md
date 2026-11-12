@@ -14,7 +14,8 @@ side holds all the rules, the client only adds visuals.
   plant if they're standing in one (it breaks), otherwise the grass block below (it turns to dirt).
 - **Feeding doesn't refill milk**, just as feeding a sheep doesn't regrow its wool. Wheat breeds a
   cow whether it's dry or full; only grazing refills it. Stone pens give no milk.
-- Feedback: milking a dry cow does nothing and plays a low moo. Jade line "Milk: ready / dry".
+- Feedback: milking a dry cow does nothing (no sound). Milking into a bottle plays the milking sound
+  and the bottle-filling sound. Jade line "Milk: ready / dry".
 - Visual: cows have no eating animation. Add a head-lowering animation on the client (mixin on
   `CowModel`), with grass-break particles and sound from the server so it reads even without it.
 - **Goats**: same rules (they graze too).
@@ -27,7 +28,8 @@ side holds all the rules, the client only adds visuals.
 - Milk bottles stack to **16**, take as long to drink as a potion, clear all effects, and return a
   glass bottle.
 - Buckets no longer milk anything. Existing milk buckets still work (old worlds), but nothing makes
-  new ones.
+  new ones, and they are hidden from the creative inventory. A bucket on a cow does nothing (no arm
+  swing).
 - Recipes: cake uses 3 milk bottles (old milk buckets are still accepted). Swap milk buckets for bottles anywhere else (other mods' recipes
   via the `c:` milk tag: add the bottle to it).
 - Watch: Pantry or other mods that check for the milk bucket item directly.

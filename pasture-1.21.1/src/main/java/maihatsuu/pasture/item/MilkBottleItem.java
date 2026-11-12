@@ -34,6 +34,10 @@ public class MilkBottleItem extends Item {
 		}
 
 		if (entity instanceof Player player) {
+			// Like potions: in creative the milk bottle isn't used up and no glass bottle is added.
+			if (player.hasInfiniteMaterials()) {
+				return stack;
+			}
 			return ItemUtils.createFilledResult(stack, player, new ItemStack(Items.GLASS_BOTTLE), false);
 		}
 		stack.consume(1, entity);
