@@ -3,12 +3,13 @@
 	"package": "maihatsuu.pasture.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
+		"AbstractHorseAccessor",
 		"AnimalMixin",
 		"ArmadilloMixin",
 		"ChickenMixin",
 		"CowMixin",
-		"DispenserBlockMixin",
 		"GoatMixin",
+		"MobMixin",
 		"MushroomCowMixin"
 	],
 	"injectors": {

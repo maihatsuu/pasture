@@ -3,7 +3,7 @@
 	"id": "pasture",
 	"version": "${version}",
 	"name": "Pasture",
-	"description": "Animal products need upkeep: cows, goats and mooshrooms graze to refill their milk (collected in bottles), chickens drop eggs when bred instead of laying them, brushed armadillos need a day to regrow, and dispensers can feed animals.",
+	"description": "Animal products need upkeep: cows, goats and mooshrooms graze to refill their milk (collected in bottles), chickens drop eggs when bred instead of laying them, brushed armadillos need a day to regrow, and animals eat breeding food dropped near them.",
 	"authors": [
 		"maihatsuu"
 	],

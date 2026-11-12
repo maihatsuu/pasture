@@ -34,8 +34,10 @@ public final class PastureConfig {
 	public int eggsPerBreedMax = 4;
 	/** Chance (0-1) that a breeding drops a dozen eggs instead. */
 	public double dozenEggsChance = 0.05;
-	/** Dispensers feed breeding food to the animal in front of them. */
-	public boolean dispenserFeeding = true;
+	/** Animals walk over to their breeding food lying on the ground and eat one item. */
+	public boolean animalsEatDroppedFood = true;
+	/** How far (in blocks, with line of sight) animals notice dropped food. */
+	public int dropFoodRange = 8;
 	/** Ticks before a brushed armadillo can be brushed again (24000 = one day). */
 	public int scuteCooldownTicks = 24000;
 	/** Scutes from one brushing (inclusive range). */
@@ -73,6 +75,7 @@ public final class PastureConfig {
 		eggsPerBreedMin = Math.max(0, eggsPerBreedMin);
 		eggsPerBreedMax = Math.max(eggsPerBreedMin, eggsPerBreedMax);
 		dozenEggsChance = Math.clamp(dozenEggsChance, 0.0, 1.0);
+		dropFoodRange = Math.clamp(dropFoodRange, 1, 32);
 		scuteCooldownTicks = Math.max(0, scuteCooldownTicks);
 		scutesPerBrushMin = Math.clamp(scutesPerBrushMin, 1, 64);
 		scutesPerBrushMax = Math.clamp(scutesPerBrushMax, scutesPerBrushMin, 64);

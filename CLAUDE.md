@@ -16,7 +16,7 @@ Run from `pasture-1.21.1/`:
 
 - `./gradlew build` — compile and produce the remapped jar in `build/libs/`
 - `./gradlew runClient` / `./gradlew runServer` — launch a dev instance (game dir: `run/`)
-- `./gradlew genSources` — decompile Minecraft sources for reading vanilla code (e.g. `Cow`, `Sheep`'s `EatBlockGoal`, `Chicken`, `Armadillo`, `DispenserBlock`)
+- `./gradlew genSources` — decompile Minecraft sources for reading vanilla code (e.g. `Cow`, `Sheep`'s `EatBlockGoal`, `Chicken`, `Armadillo`)
 
 There is no automated test suite; verification is manual in-game, following the Testing section of `Pasture.md`. A passing build doesn't prove mixins match: targets like `Cow` only load once a world is running, and `defaultRequire: 1` crashes then. `runClient` includes Jade, Mod Menu and Cloth Config (`modLocalRuntime`).
 
@@ -28,7 +28,7 @@ There is no automated test suite; verification is manual in-game, following the 
   - `src/main` — common/server code, entrypoint `maihatsuu.pasture.Pasture`, mixins in `maihatsuu.pasture.mixin` registered in `pasture.mixins.json`.
   - `src/client` — client-only code, entrypoint `maihatsuu.pasture.client.PastureClient`, mixins in `maihatsuu.pasture.client.mixin` registered in `pasture.client.mixins.json`.
   - `main` cannot reference `client` classes. New mixins must be added to the matching JSON config; injectors default to `require = 1`, so a mixin that fails to match crashes at load.
-- **Server-authoritative design:** the mod is installed on both sides, but all gameplay rules (milk state, egg drops, dispenser feeding, scute cooldown) live in `main`. The client only adds visuals (e.g. the cow head-lowering animation via a `QuadrupedModel` mixin); anything the player must notice should also come from the server (particles, sounds) so it works without the client side.
+- **Server-authoritative design:** the mod is installed on both sides, but all gameplay rules (milk state, egg drops, scute cooldown) live in `main`. The client only adds visuals (e.g. the cow head-lowering animation via a `QuadrupedModel` mixin); anything the player must notice should also come from the server (particles, sounds) so it works without the client side.
 - `Pasture.id(path)` builds `pasture:` resource locations; `Pasture.MOD_ID` is `pasture`.
 
 ## How the mod fits together
@@ -38,7 +38,7 @@ There is no automated test suite; verification is manual in-game, following the 
 - **Milk** (`milk/`): `MilkRules` holds all milking logic (bottle/bucket/bowl, sounds, the Hamlet API behind `Pasture.canMilk`/`milk`). `CowMixin`, `MushroomCowMixin`, `GoatMixin` call `MilkRules.interact` at the head of `mobInteract`; on the client it just returns SUCCESS and the server decides. Only grazing refills, and grazing copies the sheep's `EatBlockGoal` exactly (always on, adults 1/1000 and babies 1/50 per check every other tick, short grass or grass block, babies age up): `GrazeGoal` (added to cows' goalSelector) and an every-other-tick ticker in `GoatMixin` (goats use a Brain) both go through `Grazing`. Feeding never touches milk.
 - **Grazing animation**: the server broadcasts entity event 10 (the sheep's byte); `AnimalMixin.handleEntityEvent` records the start tick behind the `GrazingAnimal` duck interface, and `client/mixin/QuadrupedModelMixin` lowers cows' heads with the sheep's curve and tilts goats' heads (own constants: their head pivots in the neck).
 - **Eggs**: `ChickenMixin` holds `eggTime` at 6000 unless `passiveEggLaying`; `AnimalMixin.spawnChildFromBreeding` makes chickens drop eggs and calls vanilla `finalizeSpawnChildFromBreeding` (stats, cooldown, XP). Thrown eggs are vanilla.
-- **Dispensers**: `DispenserBlockMixin` swaps a plain `DefaultDispenseItemBehavior` for `AnimalFeedingBehavior`, which skips untamed tamables/horses and falls back to dropping. Items with their own behavior, and droppers, are untouched.
+- **Dropped food**: `MobMixin` adds `feeding/EatDroppedFoodGoal` (priority 3, like `TemptGoal`) to every `Animal` at the end of `Mob`'s constructor (server only). Brain mobs still tick their goalSelector, so the goal steers them via the `WALK_TARGET` memory instead of navigation (`usesBrain()` = brain has `WALK_TARGET` registered).
 - **Armadillo**: `ArmadilloMixin` on `brushOffScute` (dispensers' brushing goes through it too).
 - **Item/data**: `item/MilkBottleItem` (`pasture:milk_bottle`), cake recipe override in `data/minecraft/recipe/cake.json`, bottle in `c:drinks/milk`.
 - **Jade** (`compat/PastureJadePlugin`, `jade` entrypoint, in `main` because it has a server data provider). Jade is `modCompileOnly`, never referenced outside this class.

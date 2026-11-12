@@ -42,13 +42,18 @@ side holds all the rules, the client only adds visuals.
 - Result: egg supply is paced by seeds and the breeding cooldown, and chicken populations grow
   slower.
 
-## Dispenser feeding
-- A dispenser holding an animal's food feeds the first adult animal in front of it that wants it:
-  breeding food puts it in love mode (seeds make chickens breed and drop eggs). Animals that must be
-  tamed to breed (wolves, cats, horses, donkeys, llamas) are skipped while untamed.
-- One item per pulse. If nothing in front wants the food, it falls back to dropping the item as
-  vanilla does.
-- This keeps automatic farms possible, but they have to be supplied with food.
+## Dropped food
+- Animals eat their breeding food when it's lying on the ground: an adult that's off its breeding
+  cooldown and not already in love notices the food within **8 blocks** (config) in **line of
+  sight**, walks over and eats **one item** from the stack, which puts it in love mode. Love mode
+  stops it eating more, so a stack feeds one animal per item.
+- Works for every animal, including Brain-driven ones (goats, frogs, armadillos, camels...).
+  Animals that must be tamed to breed (wolves, cats, horses, donkeys, llamas) ignore food while
+  untamed, and sitting pets stay put. Chickens that eat seeds drop eggs when they breed.
+- If a player threw the item, they get the breeding stat and advancement.
+- Sounds match hand feeding: silent for most animals; goats, foxes, sniffers, cats, armadillos and
+  horses (donkeys, mules, llamas, camels) play their eating sound.
+- Automatic farms can breed animals by dropping food (droppers, hoppers) in sight of a pen.
 
 ## Armadillo scutes
 - Brushing an armadillo gives **2–6 scutes** (config) and makes it **"brushed"** for one in-game day (config).
@@ -71,7 +76,8 @@ side holds all the rules, the client only adds visuals.
 | `passiveEggLaying` | false | Keep vanilla egg laying. |
 | `eggsPerBreedMin` / `eggsPerBreedMax` | 2 / 4 | Eggs dropped when two chickens breed. |
 | `dozenEggsChance` | 0.05 | Chance that a breeding drops a dozen (12) eggs instead. |
-| `dispenserFeeding` | true | Dispensers feed animals. |
+| `animalsEatDroppedFood` | true | Animals eat breeding food dropped near them. |
+| `dropFoodRange` | 8 | How far (in line of sight) animals notice dropped food. |
 | `scuteCooldownTicks` | 24000 | Time before a brushed armadillo can be brushed again. |
 | `scutesPerBrushMin` / `scutesPerBrushMax` | 2 / 6 | Scutes from one brushing. |
 
@@ -90,5 +96,6 @@ side holds all the rules, the client only adds visuals.
 - Buckets on cows do nothing; old milk buckets still drinkable; cake crafts with 3 bottles.
 - Goats and mooshrooms (milk + stew share state, mycelium refills).
 - Chickens never lay on their own; breeding drops eggs, no chick; thrown eggs still hatch chicks.
-- Dispenser with wheat facing two cows puts them in love, one per pulse; facing nothing drops wheat.
+- Drop 5 wheat near two cows: each walks over and eats one (3 left), and they breed. A cow behind a
+  wall or 10 blocks away, a baby, or a cow on breeding cooldown ignores it. A wild wolf ignores meat.
 - Brush an armadillo twice: second brush gives nothing until a day passes.
