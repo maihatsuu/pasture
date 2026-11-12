@@ -1,0 +1,30 @@
+{
+	"item.pasture.milk_bottle": "Milk Bottle",
+
+	"jade.pasture.milk": "Milk: %s",
+	"jade.pasture.milk.ready": "ready",
+	"jade.pasture.milk.dry": "dry",
+	"jade.pasture.scute": "Scute: %s",
+	"jade.pasture.scute.ready": "ready",
+	"jade.pasture.scute.regrowing": "regrowing",
+	"config.jade.plugin_pasture.animal_products": "Pasture: milk and scutes",
+
+	"config.pasture.title": "Pasture",
+	"config.pasture.general": "General",
+	"config.pasture.milkNeedsGrazing": "Milk needs grazing",
+	"config.pasture.milkNeedsGrazing.tooltip": "Cows, goats and mooshrooms go dry after milking and refill by eating grass.",
+	"config.pasture.milkBottles": "Milk bottles",
+	"config.pasture.milkBottles.tooltip": "Glass bottles milk animals; buckets don't.",
+	"config.pasture.milkBottleStackSize": "Milk bottle stack size",
+	"config.pasture.milkBottleStackSize.tooltip": "Needs a restart, and has to match between client and server.",
+	"config.pasture.passiveEggLaying": "Passive egg laying",
+	"config.pasture.passiveEggLaying.tooltip": "Keep vanilla's egg laying. Breeding chickens still drops eggs.",
+	"config.pasture.eggsPerBreedMin": "Eggs per breeding (min)",
+	"config.pasture.eggsPerBreedMin.tooltip": "Fewest eggs dropped when two chickens breed.",
+	"config.pasture.eggsPerBreedMax": "Eggs per breeding (max)",
+	"config.pasture.eggsPerBreedMax.tooltip": "Most eggs dropped when two chickens breed.",
+	"config.pasture.dispenserFeeding": "Dispenser feeding",
+	"config.pasture.dispenserFeeding.tooltip": "Dispensers feed breeding food to the animal in front of them.",
+	"config.pasture.scuteCooldownTicks": "Scute cooldown (ticks)",
+	"config.pasture.scuteCooldownTicks.tooltip": "Time before a brushed armadillo can be brushed again. 24000 is one day."
+}

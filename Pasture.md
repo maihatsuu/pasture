@@ -7,17 +7,19 @@ side holds all the rules, the client only adds visuals.
 
 ## Milk: cows graze to refill
 - A cow has a **milk state**: full or dry. Milking makes it dry.
-- A dry cow refills by **eating grass**, like a sheep regrowing wool: it lowers its head, the grass
-  block turns to dirt, and it's full again. Uses a goal like the sheep's `EatBlockGoal`, only active
-  while dry, so full cows don't strip pastures.
-- **Wheat** refills a dry cow instantly (a dry adult eats the wheat instead of entering love mode;
-  full cows breed as normal). This keeps stone pens possible, at the cost of wheat.
+- A dry cow refills by **eating grass**, like a sheep regrowing wool: it lowers its head, eats, and
+  it's full again. Cows, mooshrooms and goats graze **exactly like sheep**: whether or not they have
+  milk, adults about every 100 seconds on average (1 in 1000 per check, checked every other tick),
+  babies far more often (1 in 50), and each meal speeds up a baby's growth. They eat a short grass
+  plant if they're standing in one (it breaks), otherwise the grass block below (it turns to dirt).
+- **Feeding doesn't refill milk**, just as feeding a sheep doesn't regrow its wool. Wheat breeds a
+  cow whether it's dry or full; only grazing refills it. Stone pens give no milk.
 - Feedback: milking a dry cow does nothing and plays a low moo. Jade line "Milk: ready / dry".
 - Visual: cows have no eating animation. Add a head-lowering animation on the client (mixin on
   `CowModel`), with grass-break particles and sound from the server so it reads even without it.
 - **Goats**: same rules (they graze too).
 - **Mooshrooms**: milk and stew share one state. They refill by eating grass or **mycelium**
-  (mycelium turns to dirt), or from wheat.
+  (mycelium turns to dirt), which sheep can't.
 
 ## Milk bottles replace milk buckets
 - Use a **glass bottle** on a full cow, goat or mooshroom to get a **milk bottle**
@@ -26,7 +28,7 @@ side holds all the rules, the client only adds visuals.
   glass bottle.
 - Buckets no longer milk anything. Existing milk buckets still work (old worlds), but nothing makes
   new ones.
-- Recipes: cake uses 3 milk bottles. Swap milk buckets for bottles anywhere else (other mods' recipes
+- Recipes: cake uses 3 milk bottles (old milk buckets are still accepted). Swap milk buckets for bottles anywhere else (other mods' recipes
   via the `c:` milk tag: add the bottle to it).
 - Watch: Pantry or other mods that check for the milk bucket item directly.
 
@@ -40,7 +42,7 @@ side holds all the rules, the client only adds visuals.
 
 ## Dispenser feeding
 - A dispenser holding an animal's food feeds the first adult animal in front of it that wants it:
-  breeding food puts it in love mode, wheat refills a dry cow, seeds make chickens breed.
+  breeding food puts it in love mode (seeds make chickens breed and drop eggs).
 - One item per pulse. If nothing in front wants the food, it falls back to dropping the item as
   vanilla does.
 - This keeps automatic farms possible, but they have to be supplied with food.
@@ -61,25 +63,27 @@ side holds all the rules, the client only adds visuals.
 | Option | Default | Description |
 |---|---|---|
 | `milkNeedsGrazing` | true | Cows, goats and mooshrooms go dry after milking. |
-| `wheatRefillsMilk` | true | Feeding wheat refills a dry animal. |
 | `milkBottles` | true | Glass bottles milk animals; buckets don't. |
 | `milkBottleStackSize` | 16 | Stack size of milk bottles. |
 | `passiveEggLaying` | false | Keep vanilla egg laying. |
-| `eggsPerBreed` | 2–4 | Eggs dropped when two chickens breed. |
+| `eggsPerBreedMin` / `eggsPerBreedMax` | 2 / 4 | Eggs dropped when two chickens breed. |
 | `dispenserFeeding` | true | Dispensers feed animals. |
 | `scuteCooldownTicks` | 24000 | Time before a brushed armadillo can be brushed again. |
 
 ## Open questions
-- Can a dry cow still be bred (with wheat it refills instead)? Or breed and refill at once?
 - Should sheep follow the same pattern (they already regrow wool from grass, so probably nothing)?
 - Does Hamlet's Shepherd also feed/breed chickens to get eggs, or only collect them?
-- Milk bottle texture: vanilla-style white bottle (needs one new item texture).
+- Hamlet.md's Shepherd still milks with buckets and collects eggs every 5 minutes; it should switch
+  to `Pasture.milk` with glass bottles and pick up the eggs that breeding drops.
+
+## Decided
+- Feeding a dry cow (goat, mooshroom) wheat breeds it and leaves it dry; only grazing refills milk.
 
 ## Testing
 - Milk a cow with a bottle → milk bottle, cow is dry; milking again fails; cow eats grass (grass
-  becomes dirt) → full again. Wheat on a dry cow refills it; wheat on a full cow breeds.
+  becomes dirt) → full again. Wheat on a dry cow breeds it and it stays dry.
 - Buckets on cows do nothing; old milk buckets still drinkable; cake crafts with 3 bottles.
 - Goats and mooshrooms (milk + stew share state, mycelium refills).
 - Chickens never lay on their own; breeding drops eggs, no chick; thrown eggs still hatch chicks.
-- Dispenser with wheat facing a dry cow refills it; facing nothing drops wheat.
+- Dispenser with wheat facing two cows puts them in love, one per pulse; facing nothing drops wheat.
 - Brush an armadillo twice: second brush gives nothing until a day passes.

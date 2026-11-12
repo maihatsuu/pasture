@@ -3,7 +3,7 @@
 	"package": "maihatsuu.pasture.client.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"client": [
-		"ExampleClientMixin"
+		"QuadrupedModelMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
