@@ -8,6 +8,7 @@ import maihatsuu.pasture.milk.MilkRules;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.animal.armadillo.Armadillo;
 import net.minecraft.world.item.ItemStack;
 
 public class Pasture implements ModInitializer {
@@ -39,5 +40,26 @@ public class Pasture implements ModInitializer {
 	 */
 	public static ItemStack milk(Entity entity) {
 		return MilkRules.milk(entity);
+	}
+
+	/**
+	 * Uses up a mooshroom's milk for mushroom stew, as a player with a bowl would: plays the sound and
+	 * makes it dry (milk and stew share one state). The caller uses up its own bowl and makes the stew.
+	 * Returns false, doing nothing, if it isn't a mooshroom with milk. Server side only.
+	 */
+	public static boolean milkForStew(Entity entity) {
+		return MilkRules.milkForStew(entity);
+	}
+
+	/**
+	 * True if the entity is an adult armadillo that isn't still brushed, so brushing it
+	 * ({@code Armadillo.brushOffScute}) would give scutes.
+	 */
+	public static boolean canBrush(Entity entity) {
+		if (!(entity instanceof Armadillo armadillo) || armadillo.isBaby()) {
+			return false;
+		}
+		Long until = armadillo.getAttached(PastureAttachments.BRUSHED_UNTIL);
+		return until == null || armadillo.level().getGameTime() >= until;
 	}
 }

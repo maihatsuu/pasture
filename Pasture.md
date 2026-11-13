@@ -62,16 +62,21 @@ side holds all the rules, the client only adds visuals.
 - Jade line "Scute: ready / regrowing".
 
 ## Hamlet compatibility
-- API: `Pasture.canMilk(entity)` and `Pasture.milk(entity)` (server side). `milk` plays the milking
-  and bottle-filling sounds, makes the animal dry and returns a milk bottle; the caller uses up its
-  own glass bottle. So Hamlet's Shepherd milks through the same rules as a player.
-- Eggs: Hamlet's Shepherd already breeds animals with feed from its storage, chickens with seeds
-  included. With Pasture, that breeding drops eggs as normal item entities, which it picks up. It
-  needs no separate egg collection.
-- To do in Hamlet (`Hamlet.md` still describes vanilla rules): the Shepherd should milk with glass
-  bottles through `Pasture.milk` instead of buckets, stock milk bottles instead of milk buckets,
-  drop its "an egg from chickens every 5 minutes" and keep bowls for mooshroom stew (which uses up
-  the same milk).
+- API (server side), for Hamlet's Shepherd to follow the same rules as a player:
+  - `Pasture.canMilk(entity)`: an adult cow, goat or mooshroom with milk.
+  - `Pasture.milk(entity)`: plays the milking and bottle-filling sounds, makes the animal dry and
+    returns a milk bottle; the caller uses up its own glass bottle.
+  - `Pasture.milkForStew(entity)`: for a mooshroom with milk, plays the milking sound and makes it
+    dry (stew shares the milk); the caller uses up its own bowl and makes the stew.
+  - `Pasture.canBrush(entity)`: an adult armadillo that isn't still brushed.
+- Hamlet calls these by reflection when Pasture is loaded, so neither mod needs the other to build.
+  With Pasture, the Shepherd:
+  - milks cows and goats with glass bottles from its storage into milk bottles, only when they have
+    milk, and makes mooshroom stew with bowls from the same milk;
+  - no longer collects eggs on a timer: it breeds chickens with seeds from its storage, and picks
+    the dropped eggs up into its stock;
+  - brushes armadillos through vanilla's `brushOffScute`, so this mod's 2–6 scutes and one-day
+    wait apply, and picks the scutes up.
 
 ## Config (`config/pasture.json`)
 Feature toggles only; amounts (stack size, egg and scute counts, ranges, cooldowns) are fixed in code.
@@ -90,7 +95,8 @@ Feature toggles only; amounts (stack size, egg and scute counts, ranges, cooldow
 - Sheep are unchanged: they already regrow wool by grazing, which is the pattern the rest copy.
 - Dispenser feeding was replaced by animals eating dropped food. Untamed animals that can't breed
   are skipped.
-- Hamlet's Shepherd gets eggs by breeding chickens (see Hamlet compatibility).
+- Hamlet's Shepherd gets eggs by breeding chickens, milks with bottles and follows the armadillo
+  wait (see Hamlet compatibility).
 
 ## Testing
 - Milk a cow with a bottle → milk bottle, cow is dry; milking again fails; cow eats grass (grass

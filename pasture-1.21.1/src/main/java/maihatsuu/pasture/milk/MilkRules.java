@@ -64,6 +64,16 @@ public final class MilkRules {
 		return new ItemStack(PastureItems.MILK_BOTTLE);
 	}
 
+	/** Uses up a mooshroom's milk for stew, with the milking sound. False if it can't be milked right now. */
+	public static boolean milkForStew(Entity entity) {
+		if (!(entity instanceof MushroomCow) || !canMilk(entity) || entity.level().isClientSide) {
+			return false;
+		}
+		entity.level().playSound(null, entity, SoundEvents.MOOSHROOM_MILK, SoundSource.PLAYERS, 1.0F, 1.0F);
+		setDry(entity, true);
+		return true;
+	}
+
 	/**
 	 * A player using an item on a cow, goat or mooshroom. Returns the result to use instead of
 	 * vanilla's, or null to let vanilla handle it.
